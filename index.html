@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Italiana&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261009-6">
+  <link rel="stylesheet" href="styles.css?v=20261009-8">
 </head>
 <body class="rebrand-v2">
   <div class="scroll-progress" aria-hidden="true"><span></span></div>
@@ -102,18 +102,20 @@
       </div>
     </section>
 
-    <section class="film section" id="film">
-      <div class="film__intro">
-        <p class="section-number reveal">03 / The film</p>
-        <h2 class="display type-reveal"><span class="type-line"><span>One day.</span></span><span class="type-line type-line--accent"><span>One living world.</span></span></h2>
-        <p class="reveal">Follow ORA from first discovery to last light—a cinematic journey through water, architecture and belonging.</p>
+    <section class="film film--scroll" id="film" data-film-scroll>
+      <div class="film__stage section">
+        <div class="film__intro">
+          <p class="section-number reveal">03 / The film</p>
+          <h2 class="display type-reveal"><span class="type-line"><span>One day.</span></span><span class="type-line type-line--accent"><span>One living world.</span></span></h2>
+          <p class="reveal">Follow ORA from first discovery to last light—a cinematic journey through water, architecture and belonging.</p>
+          <a class="text-link reveal film__vimeo" href="https://vimeo.com/1234129528" target="_blank" rel="noreferrer">Watch with sound on Vimeo <span>↗</span></a>
+        </div>
+        <div class="film__scrub reveal-image">
+          <iframe id="oraScrollFilm" data-film-scroll-frame src="https://player.vimeo.com/video/1234129528?api=1&amp;player_id=oraScrollFilm&amp;autoplay=1&amp;muted=1&amp;controls=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" title="ORA scroll-controlled film" allow="autoplay; fullscreen; picture-in-picture"></iframe>
+          <div class="film__scroll-label"><span>Scroll film</span><b>00:00</b></div>
+        </div>
+        <p class="film__side" aria-hidden="true">ORA / The self-sustaining floating haven</p>
       </div>
-      <button class="film__poster reveal-image" type="button" data-open-film aria-label="Play the ORA film">
-        <img src="https://lh3.googleusercontent.com/d/1HFvDIkvgZYGE7TiMQL17OWUAPeYBkDb9=w1080" alt="ORA film poster" loading="lazy">
-        <span class="film__play"><i></i> Play film</span>
-        <span class="film__runtime">Vertical film / 2026</span>
-      </button>
-      <p class="film__side" aria-hidden="true">ORA / The self-sustaining floating haven</p>
     </section>
 
     <section class="principles section">
@@ -166,6 +168,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=20261009-6"></script>
+  <script src="script.js?v=20261009-8"></script>
 </body>
 </html>

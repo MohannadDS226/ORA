@@ -32,6 +32,25 @@ skipIntro?.addEventListener('click',()=>{
 });
 
 const nav=d.querySelector('[data-nav]');
+const scrollFilm=d.querySelector('[data-film-scroll]');
+const scrollFilmFrame=d.querySelector('[data-film-scroll-frame]');
+const scrollFilmLabel=d.querySelector('.film__scroll-label b');
+let scrollFilmDuration=0;
+let scrollFilmTarget=-1;
+function postToScrollFilm(method,value){
+  if(!scrollFilmFrame?.contentWindow)return;
+  scrollFilmFrame.contentWindow.postMessage({method,...(value===undefined?{}:{value})},'https://player.vimeo.com');
+}
+addEventListener('message',event=>{
+  if(event.origin!=='https://player.vimeo.com'||event.source!==scrollFilmFrame?.contentWindow)return;
+  let data=event.data;
+  if(typeof data==='string'){try{data=JSON.parse(data)}catch{return}}
+  if(data?.event==='ready'){
+    postToScrollFilm('pause');
+    postToScrollFilm('getDuration');
+  }
+  if(data?.method==='getDuration'&&Number.isFinite(data.value))scrollFilmDuration=data.value;
+});
 const toggle=d.querySelector('.menu-toggle');
 toggle?.addEventListener('click',()=>{
   const open=nav.classList.toggle('menu-open');
@@ -44,34 +63,54 @@ nav?.querySelectorAll('nav a').forEach(link=>link.addEventListener('click',()=>{
 
 const reveals=d.querySelectorAll('.reveal,.reveal-image,.type-reveal');
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
-  if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}
-}),{threshold:.12,rootMargin:'0px 0px -6%'});
+  const el=entry.target;
+  el.classList.toggle('is-visible',entry.isIntersecting);
+  el.dataset.motionDirection=body.dataset.scrollDirection||'down';
+}),{threshold:.1,rootMargin:'-7% 0px -7%'});
 reveals.forEach(el=>observer.observe(el));
 
 d.querySelectorAll('.type-reveal').forEach(block=>{
   block.querySelectorAll('.type-line>span').forEach((line,index)=>line.style.setProperty('--line-index',index));
 });
+d.querySelectorAll('.principles__grid article').forEach((item,index)=>item.style.setProperty('--motion-index',index));
 
 d.querySelectorAll('.reveal-words').forEach(el=>{
   el.innerHTML=el.textContent.trim().split(/\s+/).map(word=>`<span class="word">${word}</span>`).join(' ');
   const words=[...el.querySelectorAll('.word')];
+  words.forEach((word,i)=>word.style.setProperty('--word-index',i));
   const wordObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
-    if(!entry.isIntersecting)return;
-    words.forEach((word,i)=>setTimeout(()=>word.classList.add('is-lit'),i*65));
-    wordObserver.disconnect();
+    words.forEach(word=>word.classList.toggle('is-lit',entry.isIntersecting));
   }),{threshold:.35});
   wordObserver.observe(el);
 });
 
 let ticking=false;
+let lastScrollY=scrollY;
 function onScroll(){
   if(ticking)return;ticking=true;
   requestAnimationFrame(()=>{
+    const currentScrollY=scrollY;
+    body.dataset.scrollDirection=currentScrollY>=lastScrollY?'down':'up';
+    lastScrollY=currentScrollY;
     const max=d.documentElement.scrollHeight-innerHeight;
     const ratio=max>0?scrollY/max:0;
     const progress=d.querySelector('.scroll-progress span');
     if(progress)progress.style.transform=`scaleX(${ratio})`;
     nav?.classList.toggle('is-scrolled',scrollY>50);
+    if(scrollFilm&&scrollFilmFrame&&!reduced&&scrollFilmDuration>0){
+      const distance=Math.max(1,scrollFilm.offsetHeight-innerHeight);
+      const filmProgress=Math.max(0,Math.min(1,-scrollFilm.getBoundingClientRect().top/distance));
+      const targetTime=filmProgress*Math.max(0,scrollFilmDuration-.08);
+      if(Math.abs(scrollFilmTarget-targetTime)>.055){
+        scrollFilmTarget=targetTime;
+        postToScrollFilm('setCurrentTime',targetTime);
+      }
+      scrollFilm.style.setProperty('--film-progress',filmProgress.toFixed(4));
+      if(scrollFilmLabel){
+        const seconds=Math.max(0,Math.floor(targetTime));
+        scrollFilmLabel.textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
+      }
+    }
     if(!reduced)d.querySelectorAll('[data-parallax]').forEach(el=>{
       const rect=el.getBoundingClientRect();
       const value=Math.max(-70,Math.min(70,(rect.top+rect.height/2-innerHeight/2)*-.06));
