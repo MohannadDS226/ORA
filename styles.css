@@ -148,8 +148,8 @@
 /* ORA liquid motion — every scroll entrance has a matching reverse exit. */
 .film__vimeo{margin-top:2.2rem;width:max-content}
 .rebrand-v2 .film--scroll{display:block;height:360svh;min-height:360svh;padding:0;background:#c5b69f;color:var(--ink)}
-.rebrand-v2 .film__stage{position:sticky;top:0;min-height:100svh;display:grid;grid-template-columns:1.1fr minmax(18rem,34rem) 2rem;align-items:center;gap:clamp(2rem,6vw,7rem);overflow:hidden}
-.film__scrub{position:relative;width:min(32vw,34rem);aspect-ratio:9/16;justify-self:center;background:#050807;overflow:hidden}
+.rebrand-v2 .film__stage{position:sticky;top:0;height:100svh;min-height:100svh;padding-block:5.5rem 2rem;display:grid;grid-template-columns:1.1fr minmax(18rem,34rem) 2rem;align-items:center;gap:clamp(2rem,6vw,7rem);overflow:hidden}
+.film__scrub{position:relative;width:auto;height:min(78svh,48rem);max-width:32vw;aspect-ratio:9/16;justify-self:center;background:#050807;overflow:hidden}
 .film__scrub iframe{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);border:0;pointer-events:none;transform:translateZ(0);backface-visibility:hidden}
 .film__scroll-label{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:.85rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase}
 .film__scroll-label b{font-weight:400;font-variant-numeric:tabular-nums}
@@ -201,7 +201,7 @@
 .rebrand-v2 .principles__grid article.reveal{transition-delay:calc((var(--motion-index,0))*60ms)}
 .rebrand-v2 .manifesto__copy .word{transition:opacity .45s ease;transition-delay:calc(var(--word-index,0)*55ms)}
 
-@media(max-width:900px){.rebrand-v2 .film__stage{grid-template-columns:1fr 1fr}.rebrand-v2 .film__side{display:none}.film__scrub{width:min(46vw,28rem)}}
+@media(max-width:900px){.rebrand-v2 .film__stage{grid-template-columns:1fr 1fr}.rebrand-v2 .film__side{display:none}.film__scrub{width:auto;height:min(74svh,42rem);max-width:46vw}}
 @media(max-width:620px){
   .rebrand-v2 .film--scroll{height:300svh;min-height:300svh}
   .rebrand-v2 .film__stage{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:center;justify-items:center;gap:clamp(1rem,3.5svh,1.75rem);padding-top:5.2rem;padding-bottom:1rem}
