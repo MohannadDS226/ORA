@@ -1,0 +1,18 @@
+{
+  "name": "ORA — The Self-Sustaining Floating Haven",
+  "short_name": "ORA",
+  "description": "A cinematic architectural visualization project by Mohannad Haikal.",
+  "start_url": "/ORA/",
+  "scope": "/ORA/",
+  "display": "standalone",
+  "background_color": "#07100f",
+  "theme_color": "#07100f",
+  "icons": [
+    {
+      "src": "assets/ora-logo-white-v3.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
