@@ -13,14 +13,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Italiana&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261009-3">
+  <link rel="stylesheet" href="styles.css?v=20261009-4">
 </head>
 <body>
-  <div class="loader" aria-hidden="true">
-    <div class="loader__mark"><span>O</span><span>R</span><span>A</span></div>
-    <div class="loader__line"><i></i></div>
-  </div>
-
   <div class="scroll-progress" aria-hidden="true"><span></span></div>
   <header class="nav" data-nav>
     <a class="wordmark" href="#top" aria-label="ORA home">ORA</a>
@@ -34,20 +29,23 @@
 
   <main>
     <section class="hero" id="top" data-parallax>
-      <picture class="hero__media">
-        <source srcset="https://lh3.googleusercontent.com/d/1xi5PVGclxjtlXIiSwUf2-Ej26t8KjijK=w1000 1000w, https://lh3.googleusercontent.com/d/1xi5PVGclxjtlXIiSwUf2-Ej26t8KjijK=w1800 1800w" sizes="100vw">
-        <img src="https://lh3.googleusercontent.com/d/1xi5PVGclxjtlXIiSwUf2-Ej26t8KjijK=w1800" alt="ORA floating residence glimpsed through dense tropical foliage" fetchpriority="high">
-      </picture>
+      <video class="hero__media hero__video" data-hero-video muted playsinline preload="auto" poster="https://res.cloudinary.com/vysyrabp/video/upload/so_9.9,w_2560,q_auto,f_webp/v1791547738/ORA/ora-hero-web.webp" aria-hidden="true">
+        <source src="https://res.cloudinary.com/vysyrabp/video/upload/v1791547738/ORA/ora-hero-web.mp4" type="video/mp4">
+      </video>
       <div class="hero__veil"></div>
+      <div class="hero__intro-mark" data-intro-mark>
+        <h1>ORA</h1>
+        <p>The self-sustaining floating haven</p>
+      </div>
       <div class="hero__content">
         <p class="eyebrow reveal">The self-sustaining floating haven</p>
-        <h1 class="hero__title" aria-label="ORA"><span>O</span><span>R</span><span>A</span></h1>
         <div class="hero__foot reveal">
           <p>A private world shaped by<br>water, light and living architecture.</p>
           <a class="text-link" href="#arrival">Enter the haven <span>01</span></a>
         </div>
       </div>
       <div class="hero__index" aria-hidden="true">18° 20′ N<br>Water / Land</div>
+      <button class="hero__skip" type="button" data-skip-intro>Skip</button>
     </section>
 
     <section class="manifesto section" id="arrival">
@@ -160,6 +158,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=20261009-3"></script>
+  <script src="script.js?v=20261009-4"></script>
 </body>
 </html>

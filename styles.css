@@ -25,3 +25,20 @@
 .gallery-grid{padding-top:clamp(1.5rem,3vw,3rem)}
 .reveal-image{clip-path:none;opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
 .reveal-image.is-visible{clip-path:none;opacity:1;transform:none}
+
+/* Cinematic hero film: the moving image is both opener and final hero. */
+.hero__video{width:110%;height:110%;object-fit:cover;object-position:center center;background:var(--ink)}
+.hero__veil{background:linear-gradient(180deg,rgba(4,9,8,.18),rgba(4,9,8,.02) 48%,rgba(4,9,8,.62))}
+.hero__intro-mark{position:absolute;z-index:4;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;color:#fff;opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.hero__intro-mark h1{margin:0;font:clamp(6rem,18vw,18rem)/.76 var(--serif);font-weight:400;letter-spacing:.08em;text-indent:.08em}
+.hero__intro-mark p{margin:1.4rem 0 0;text-transform:uppercase;letter-spacing:.24em;font-size:clamp(.64rem,.8vw,.82rem)}
+.intro-title-visible .hero__intro-mark{opacity:1;transform:none}
+.intro-active .nav,.intro-active .hero__content,.intro-active .hero__index{opacity:0;pointer-events:none}
+.nav,.hero__content,.hero__index{transition:opacity .9s ease,background .5s,color .5s,transform .5s}
+.intro-done .nav,.intro-done .hero__content,.intro-done .hero__index{opacity:1}
+.hero__skip{position:absolute;z-index:6;right:var(--pad);bottom:1.5rem;border:1px solid rgba(255,255,255,.55);border-radius:99px;padding:.55rem 1rem;background:rgba(7,16,15,.24);backdrop-filter:blur(8px);color:#fff;text-transform:uppercase;letter-spacing:.14em;font-size:.62rem;cursor:pointer;transition:opacity .45s,background .3s}
+.hero__skip:hover{background:rgba(7,16,15,.72)}
+.intro-done .hero__skip{opacity:0;pointer-events:none}
+.hero__content{justify-content:flex-end;gap:clamp(1.5rem,4vh,3.5rem)}
+@media(max-width:700px){.hero__video{object-position:68% center}.hero__intro-mark h1{font-size:27vw}.hero__intro-mark p{font-size:.58rem;letter-spacing:.16em}.hero__skip{bottom:1rem}}
+@media(prefers-reduced-motion:reduce){.hero__video{display:none}.hero{background:url('https://res.cloudinary.com/vysyrabp/video/upload/so_9.9,w_2560,q_auto,f_webp/v1791547738/ORA/ora-hero-web.webp') 68% center/cover no-repeat}.hero__skip,.hero__intro-mark{display:none}}

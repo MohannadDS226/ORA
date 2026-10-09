@@ -2,7 +2,34 @@ const d=document;
 const body=d.body;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-addEventListener('load',()=>setTimeout(()=>d.querySelector('.loader')?.classList.add('is-gone'),300));
+const heroVideo=d.querySelector('[data-hero-video]');
+const skipIntro=d.querySelector('[data-skip-intro]');
+let introFinished=false;
+function finishIntro(){
+  if(introFinished)return;
+  introFinished=true;
+  body.classList.remove('intro-active','intro-title-visible');
+  body.classList.add('intro-done');
+}
+if(heroVideo&&!reduced){
+  body.classList.add('intro-active');
+  heroVideo.addEventListener('timeupdate',()=>{
+    const showTitle=heroVideo.currentTime>.7&&heroVideo.currentTime<6.8;
+    body.classList.toggle('intro-title-visible',showTitle);
+  });
+  heroVideo.addEventListener('ended',finishIntro,{once:true});
+  heroVideo.addEventListener('error',finishIntro,{once:true});
+  const attempt=heroVideo.play();
+  if(attempt)attempt.catch(finishIntro);
+  setTimeout(finishIntro,14000);
+}else{
+  finishIntro();
+}
+skipIntro?.addEventListener('click',()=>{
+  heroVideo?.pause();
+  if(heroVideo?.duration)heroVideo.currentTime=Math.max(0,heroVideo.duration-.05);
+  finishIntro();
+});
 
 const nav=d.querySelector('[data-nav]');
 const toggle=d.querySelector('.menu-toggle');
