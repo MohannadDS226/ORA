@@ -23,3 +23,5 @@
 /* Keep the first gallery frame visible in the opening viewport. */
 .gallery-hero{padding-top:clamp(8rem,10vw,10rem);padding-bottom:clamp(3rem,5vw,5rem)}
 .gallery-grid{padding-top:clamp(1.5rem,3vw,3rem)}
+.reveal-image{clip-path:none;opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.reveal-image.is-visible{clip-path:none;opacity:1;transform:none}
