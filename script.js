@@ -42,11 +42,15 @@ nav?.querySelectorAll('nav a').forEach(link=>link.addEventListener('click',()=>{
   nav.classList.remove('menu-open');toggle?.setAttribute('aria-expanded','false');body.classList.remove('is-locked');
 }));
 
-const reveals=d.querySelectorAll('.reveal,.reveal-image');
+const reveals=d.querySelectorAll('.reveal,.reveal-image,.type-reveal');
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
   if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}
 }),{threshold:.12,rootMargin:'0px 0px -6%'});
 reveals.forEach(el=>observer.observe(el));
+
+d.querySelectorAll('.type-reveal').forEach(block=>{
+  block.querySelectorAll('.type-line>span').forEach((line,index)=>line.style.setProperty('--line-index',index));
+});
 
 d.querySelectorAll('.reveal-words').forEach(el=>{
   el.innerHTML=el.textContent.trim().split(/\s+/).map(word=>`<span class="word">${word}</span>`).join(' ');
