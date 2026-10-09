@@ -192,6 +192,12 @@
 }
 .rebrand-v2[data-scroll-direction="up"] .type-line>span{transform-origin:0 0}
 .rebrand-v2[data-scroll-direction="up"] .reveal-image{transform-origin:50% 0}
+.rebrand-v2 .type-line{
+  padding:.24em .2em .22em;
+  margin:-.24em -.2em -.22em;
+  overflow:clip;
+  overflow-clip-margin:.04em;
+}
 .rebrand-v2 .principles__grid article.reveal{transition-delay:calc((var(--motion-index,0))*60ms)}
 .rebrand-v2 .manifesto__copy .word{transition:opacity .45s ease;transition-delay:calc(var(--word-index,0)*55ms)}
 
