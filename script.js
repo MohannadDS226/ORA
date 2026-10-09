@@ -37,9 +37,31 @@ const scrollFilmFrame=d.querySelector('[data-film-scroll-frame]');
 const scrollFilmLabel=d.querySelector('.film__scroll-label b');
 let scrollFilmDuration=0;
 let scrollFilmTarget=-1;
+let scrollFilmRendered=-1;
+let scrollFilmSeekPending=false;
+let scrollFilmSeekTimer=0;
+let scrollFilmSeekWatchdog=0;
+const scrollFilmSeekInterval=matchMedia('(max-width: 620px)').matches?120:90;
 function postToScrollFilm(method,value){
   if(!scrollFilmFrame?.contentWindow)return;
   scrollFilmFrame.contentWindow.postMessage({method,...(value===undefined?{}:{value})},'https://player.vimeo.com');
+}
+function flushScrollFilmSeek(){
+  scrollFilmSeekTimer=0;
+  if(scrollFilmSeekPending||scrollFilmTarget<0)return;
+  if(Math.abs(scrollFilmTarget-scrollFilmRendered)<.09)return;
+  scrollFilmSeekPending=true;
+  scrollFilmRendered=scrollFilmTarget;
+  postToScrollFilm('setCurrentTime',scrollFilmRendered);
+  clearTimeout(scrollFilmSeekWatchdog);
+  scrollFilmSeekWatchdog=setTimeout(()=>{
+    scrollFilmSeekPending=false;
+    if(Math.abs(scrollFilmTarget-scrollFilmRendered)>.09)queueScrollFilmSeek();
+  },450);
+}
+function queueScrollFilmSeek(){
+  if(scrollFilmSeekPending||scrollFilmSeekTimer)return;
+  scrollFilmSeekTimer=setTimeout(flushScrollFilmSeek,scrollFilmSeekInterval);
 }
 addEventListener('message',event=>{
   if(event.origin!=='https://player.vimeo.com'||event.source!==scrollFilmFrame?.contentWindow)return;
@@ -48,8 +70,14 @@ addEventListener('message',event=>{
   if(data?.event==='ready'){
     postToScrollFilm('pause');
     postToScrollFilm('getDuration');
+    postToScrollFilm('addEventListener','seeked');
   }
   if(data?.method==='getDuration'&&Number.isFinite(data.value))scrollFilmDuration=data.value;
+  if(data?.event==='seeked'){
+    clearTimeout(scrollFilmSeekWatchdog);
+    scrollFilmSeekPending=false;
+    if(Math.abs(scrollFilmTarget-scrollFilmRendered)>.09)queueScrollFilmSeek();
+  }
 });
 const toggle=d.querySelector('.menu-toggle');
 toggle?.addEventListener('click',()=>{
@@ -101,9 +129,9 @@ function onScroll(){
       const distance=Math.max(1,scrollFilm.offsetHeight-innerHeight);
       const filmProgress=Math.max(0,Math.min(1,-scrollFilm.getBoundingClientRect().top/distance));
       const targetTime=filmProgress*Math.max(0,scrollFilmDuration-.08);
-      if(Math.abs(scrollFilmTarget-targetTime)>.055){
+      if(Math.abs(scrollFilmTarget-targetTime)>.035){
         scrollFilmTarget=targetTime;
-        postToScrollFilm('setCurrentTime',targetTime);
+        queueScrollFilmSeek();
       }
       scrollFilm.style.setProperty('--film-progress',filmProgress.toFixed(4));
       if(scrollFilmLabel){
