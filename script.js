@@ -66,43 +66,34 @@ const closing=d.querySelector('[data-closing]');
 const closingStage=closing?.querySelector('.closing__stage');
 const soundToggle=d.querySelector('[data-sound-toggle]');
 const soundLabel=d.querySelector('[data-sound-label]');
-let soundscape=null;
+const soundtrack=d.querySelector('[data-soundtrack]');
 let soundEnabled=false;
-function buildSoundscape(){
-  const AudioContext=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContext)return null;
-  const context=new AudioContext();
-  const master=context.createGain();
-  const ambience=context.createGain();
-  const filter=context.createBiquadFilter();
-  const drone=context.createOscillator();
-  const droneGain=context.createGain();
-  const lfo=context.createOscillator();
-  const lfoGain=context.createGain();
-  const buffer=context.createBuffer(1,context.sampleRate*5,context.sampleRate);
-  const data=buffer.getChannelData(0);
-  let wash=0;
-  for(let i=0;i<data.length;i++){wash=wash*.985+(Math.random()*2-1)*.015;data[i]=wash}
-  const source=context.createBufferSource();
-  source.buffer=buffer;source.loop=true;
-  filter.type='lowpass';filter.frequency.value=820;filter.Q.value=.45;
-  ambience.gain.value=.038;drone.type='sine';drone.frequency.value=54;droneGain.gain.value=.012;
-  lfo.type='sine';lfo.frequency.value=.075;lfoGain.gain.value=.009;
-  source.connect(filter).connect(ambience).connect(master);
-  drone.connect(droneGain).connect(master);
-  lfo.connect(lfoGain).connect(ambience.gain);
-  master.gain.value=0;master.connect(context.destination);
-  source.start();drone.start();lfo.start();
-  return{context,master,filter,drone};
+let soundFadeFrame=0;
+function fadeSound(target,duration,onComplete){
+  if(!soundtrack)return;
+  cancelAnimationFrame(soundFadeFrame);
+  const from=soundtrack.volume;
+  const started=performance.now();
+  const step=now=>{
+    const p=Math.min(1,(now-started)/duration);
+    const eased=1-Math.pow(1-p,3);
+    soundtrack.volume=from+(target-from)*eased;
+    if(p<1)soundFadeFrame=requestAnimationFrame(step);
+    else onComplete?.();
+  };
+  soundFadeFrame=requestAnimationFrame(step);
 }
 soundToggle?.addEventListener('click',async()=>{
-  soundscape??=buildSoundscape();
-  if(!soundscape)return;
-  await soundscape.context.resume();
-  soundEnabled=!soundEnabled;
-  const now=soundscape.context.currentTime;
-  soundscape.master.gain.cancelScheduledValues(now);
-  soundscape.master.gain.setTargetAtTime(soundEnabled ? .07 : 0,now,.32);
+  if(!soundtrack)return;
+  const next=!soundEnabled;
+  if(next){
+    soundtrack.volume=0;
+    try{await soundtrack.play()}catch{return}
+    fadeSound(.58,900);
+  }else{
+    fadeSound(0,650,()=>soundtrack.pause());
+  }
+  soundEnabled=next;
   soundToggle.setAttribute('aria-pressed',String(soundEnabled));
   soundToggle.setAttribute('aria-label',soundEnabled?'Turn ambient sound off':'Turn ambient sound on');
   if(soundLabel)soundLabel.textContent=soundEnabled?'Sound off':'Sound on';
@@ -201,11 +192,6 @@ function onScroll(){
       closingStage.style.setProperty('--closing-intro-lift',`${((1-p)*29).toFixed(2)}px`);
       closingStage.style.setProperty('--closing-reflection-shift',`${((1-p)*32).toFixed(2)}px`);
       closingStage.style.setProperty('--closing-line-shift',`${((1-p)*24).toFixed(2)}px`);
-    }
-    if(soundscape&&soundEnabled){
-      const now=soundscape.context.currentTime;
-      soundscape.filter.frequency.setTargetAtTime(620+ratio*760,now,.8);
-      soundscape.drone.frequency.setTargetAtTime(52+ratio*12,now,.8);
     }
     if(!reduced)d.querySelectorAll('[data-parallax]').forEach(el=>{
       const rect=el.getBoundingClientRect();
