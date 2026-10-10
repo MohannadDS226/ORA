@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Italiana&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261010-12">
+  <link rel="stylesheet" href="styles.css?v=20261010-13">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -174,12 +174,23 @@
     <section class="waterline" data-waterline aria-label="Transition below the waterline">
       <div class="waterline__stage">
         <div class="waterline__air" aria-hidden="true"></div>
-        <div class="waterline__depth" aria-hidden="true"><div class="waterline__caustics"></div></div>
-        <div class="waterline__copy">
-          <p class="section-number">From exterior to interior</p>
-          <h2><span>Between water</span><em>and home.</em></h2>
+        <div class="waterline__depth" aria-hidden="true">
+          <img src="https://lh3.googleusercontent.com/d/1aJTKizcioj_NWwINqHUIzaBGwK4hebgs=w1800" alt="">
+          <div class="waterline__shade"></div>
+          <div class="waterline__caustics"></div>
+          <div class="waterline__lens"></div>
         </div>
-        <div class="waterline__echo" aria-hidden="true"><span>Between water</span><em>and home.</em></div>
+        <div class="waterline__copy waterline__copy--air">
+          <p class="section-number">The threshold / 04</p>
+          <h2><span>Between</span><em>water &amp; home.</em></h2>
+          <p class="waterline__instruction">Scroll to cross the surface</p>
+        </div>
+        <div class="waterline__copy waterline__copy--submerged" aria-hidden="true">
+          <p class="section-number">The threshold / 04</p>
+          <h2><span>Between</span><em>water &amp; home.</em></h2>
+          <p class="waterline__instruction">Scroll to cross the surface</p>
+        </div>
+        <div class="waterline__meter" aria-hidden="true"><span>Surface</span><i></i><b data-waterline-depth>0.0 m</b></div>
         <span class="waterline__edge" aria-hidden="true"></span>
       </div>
     </section>
@@ -243,6 +254,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=20261010-12"></script>
+  <script src="script.js?v=20261010-13"></script>
 </body>
 </html>
