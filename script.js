@@ -75,7 +75,7 @@ function fadeSound(target,duration,onComplete){
   const from=soundtrack.volume;
   const started=performance.now();
   const step=now=>{
-    const p=Math.min(1,(now-started)/duration);
+    const p=Math.max(0,Math.min(1,(now-started)/duration));
     const eased=1-Math.pow(1-p,3);
     soundtrack.volume=from+(target-from)*eased;
     if(p<1)soundFadeFrame=requestAnimationFrame(step);
