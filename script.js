@@ -60,6 +60,7 @@ function renderScrollFilm(now){
 requestAnimationFrame(renderScrollFilm);
 
 const waterline=d.querySelector('[data-waterline]');
+const waterlineStage=waterline?.querySelector('.waterline__stage');
 const waterlineDepth=d.querySelector('[data-waterline-depth]');
 const closing=d.querySelector('[data-closing]');
 const closingStage=closing?.querySelector('.closing__stage');
@@ -164,22 +165,22 @@ function onScroll(){
         scrollFilmLabel.textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;
       }
     }
-    if(waterline&&!reduced){
+    if(waterline&&waterlineStage&&!reduced){
       const rect=waterline.getBoundingClientRect();
       const distance=Math.max(1,rect.height-innerHeight);
       const p=Math.max(0,Math.min(1,-rect.top/distance));
       const tide=98-p*100;
       const wave=Math.sin(p*Math.PI*8);
       const shift=(p-.5)*90;
-      waterline.style.setProperty('--waterline-y',`${tide.toFixed(2)}%`);
-      waterline.style.setProperty('--waterline-caustic-x',`${(shift*.28).toFixed(2)}px`);
-      waterline.style.setProperty('--waterline-caustic-y',`${(shift*-.16).toFixed(2)}px`);
-      waterline.style.setProperty('--waterline-copy-shift',`${((p-.5)*-18).toFixed(2)}px`);
-      waterline.style.setProperty('--waterline-refraction',`${(wave*5.5).toFixed(2)}px`);
-      waterline.style.setProperty('--waterline-lens',Math.abs(wave*.055).toFixed(4));
-      waterline.style.setProperty('--waterline-image-scale',(1.2-p*.18).toFixed(4));
-      waterline.style.setProperty('--waterline-image-y',`${(4-p*7).toFixed(2)}%`);
-      waterline.style.setProperty('--waterline-focus',`${((1-p)*10).toFixed(2)}px`);
+      waterlineStage.style.setProperty('--waterline-y',`${Math.max(0,tide).toFixed(2)}%`);
+      waterlineStage.style.setProperty('--waterline-caustic-x',`${(shift*.28).toFixed(2)}px`);
+      waterlineStage.style.setProperty('--waterline-caustic-y',`${(shift*-.16).toFixed(2)}px`);
+      waterlineStage.style.setProperty('--waterline-copy-shift',`${((p-.5)*-18).toFixed(2)}px`);
+      waterlineStage.style.setProperty('--waterline-refraction',`${(wave*5.5).toFixed(2)}px`);
+      waterlineStage.style.setProperty('--waterline-lens',Math.abs(wave*.055).toFixed(4));
+      waterlineStage.style.setProperty('--waterline-image-scale',(1.2-p*.18).toFixed(4));
+      waterlineStage.style.setProperty('--waterline-image-y',`${(4-p*7).toFixed(2)}%`);
+      waterlineStage.style.setProperty('--waterline-focus',`${((1-p)*10).toFixed(2)}px`);
       if(waterlineDepth)waterlineDepth.textContent=`${(p*3.8).toFixed(1)} m`;
     }
     if(closing&&closingStage&&!reduced){
